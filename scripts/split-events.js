@@ -1,5 +1,5 @@
 const fs = require('fs');
-console.log('loading');
+console.log('processing events');
 fs.readFile('../data/0021500622.json', 'utf8', (err, content) => {
   const json = JSON.parse(content);
   console.log(Object.keys(json));
@@ -16,5 +16,5 @@ fs.readFile('../data/0021500622.json', 'utf8', (err, content) => {
   });
   Promise.all(promises)
     .then(() => {console.log('complete')})
-    .catch((e) => {console.log(e)});
+    .catch((e) => {if (e) {console.log(e);}});
 });

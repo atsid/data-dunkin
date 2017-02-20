@@ -17,10 +17,12 @@
     margin-bottom: 10px;
 }
 #game-clock {
+    color: #5D6D7E;
     width: 250px;
     display: inline-block;
 }
 #shot-clock {
+    color: #5D6D7E;
     width: 250px;
     display: inline-block;
 }
@@ -29,12 +31,21 @@
 }
 .roster {
     text-align: center;
-    height: 100px;
-    padding: 20px;
+    height: 120px;
+    padding-bottom: 20px;
 }
 .headshot {
     width: 44px;
     height: 32px;
     display: inline-block;
     border: 1px solid #999;
+}
+img {
+    opacity: 0.5;
+}
+.active {
+    opacity: 1.0;
+}
+.has-ball {
+    border: 3px solid #F7DC6F;
 }
