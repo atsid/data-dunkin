@@ -6,59 +6,47 @@
     <title>NBA Motion Viz</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 20px;
-            font-family: Helvetica, Arial, sans-serif;
-        }
-        #court {
-            width: 940px;
-            height: 500px;
-            background: url('./client/fullcourt.svg');
-        }
-        #plot {
-            width: 940px;
-            height: 500px;
-        }
-        #controls {
-            height: 40px;
-        }
-        #game-clock {
-            display: inline-block;
-            width: 150px;
-        }
-        #shot-clock {
-            display: inline-block;
-            width: 150px;
-        }
-    </style>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./client/main.css">
 </head>
 
 <body>
-    <div id="app">
-        <div id="controls">
-            <button id="toggle">Start/Stop</button>
-            <div id="game-clock">
-                <span>Game: </span>
-                <span id="gc"></span>
-            </div>
-            <div id="shot-clock">
-                <span>Shot: </span>
-                <span id="sc"></span>
-            </div>
-            <div>
-                <input id="ghost-chk" type="checkbox" checked>Ghosting</input>
+    <div id="container">
+        <div class="row">
+            <div class="col-lg-12" id="clocks">
+                <h2 id="game-clock">
+                    <span>GAME: </span>
+                    <span id="gc"></span>
+                </h2>
+                <h2 id="shot-clock">
+                    <span>SHOT: </span>
+                    <span id="sc"></span>
+                </h2>
             </div>
         </div>
-
-        <div id="court">
-            <svg id="plot"></svg>
+        <div class="row">
+            <div id="home" class="col-lg-6 roster"></div>
+            <div id="visitor" class="col-lg-6 roster"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 controls">
+                <div>
+                    <button id="toggle">Start/Stop</button>
+                </div>
+                <div>
+                    <input id="ghost-chk" type="checkbox" checked />
+                    <label for="ghost-chk">Ghosting</label>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div id="court">
+                    <svg id="plot"></svg>
+                </div>
+            </div>
         </div>
     </div>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/d3/d3.min.js"></script>
     <script async src="build/bundle.js"></script></body>
 </html>

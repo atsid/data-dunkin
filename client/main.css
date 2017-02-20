@@ -1,0 +1,40 @@
+#court {
+    width: 940px;
+    height: 500px;
+    background: url('./fullcourt.svg');
+}
+#plot {
+    width: 940px;
+    height: 500px;
+}
+#clocks {
+    text-align: center;
+}
+.controls {
+    padding-left: 40px;
+}
+.controls div {
+    margin-bottom: 10px;
+}
+#game-clock {
+    width: 250px;
+    display: inline-block;
+}
+#shot-clock {
+    width: 250px;
+    display: inline-block;
+}
+#toggle {
+    text-align: center;
+}
+.roster {
+    text-align: center;
+    height: 100px;
+    padding: 20px;
+}
+.headshot {
+    width: 44px;
+    height: 32px;
+    display: inline-block;
+    border: 1px solid #999;
+}

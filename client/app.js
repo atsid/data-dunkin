@@ -2,6 +2,7 @@
 const COURT_WIDTH = 94;
 const COURT_HEIGHT = 50;
 // svg court image background from NBA, in pixels
+// TODO: pull from CSS
 const WIDTH = 940;
 const HEIGHT = 500;
 const INTERVAL = 40; // set FPS to match data readings of 25 FPS
@@ -50,8 +51,10 @@ function tick(data) {
   const players = playerPositions[frame].players;
 
   // update the game and shot clock displays from the ball data
-  $('#gc').html(`${ball.gr}`);
-  $('#sc').html(`${ball.sc}`);
+  const min = Math.round(ball.gr / 60);
+  const sec = ((ball.gr) % 60).toFixed(2);
+  $('#gc').html(`${min}:${sec}`);
+  $('#sc').html(`${ball.sc.toFixed(2)}`);
 
   // update the circles for the ball position and size indicator
   svg.select('#ball')
@@ -122,9 +125,29 @@ function initControls() {
   });
 }
 
-function init(ballData, playerData) {
+function initTeams(teamData) {
+  function p(player) {
+    return `<div style="display: inline-block;" id="${player.playerid}" tooltip="${player.firstname} ${player.lastname}">
+                <img class="headshot" src="./client/images/headshots/${player.playerid}.png"
+                    title="${player.firstname} ${player.lastname}"
+                />
+            </div>`;
+  }
+
+  const homes = teamData.home.players.map(p);
+  $('#home').html(`<div>${teamData.home.name}</div>
+                    ${homes.join(' ')}
+                  `);
+  const visitors = teamData.visitor.players.map(p);
+  $('#visitor').html(`<div>${teamData.visitor.name}</div>
+                    ${visitors.join(' ')}
+                     `);
+}
+
+function init(ballData, playerData, teamData) {
   ballPositions = ballData;
   playerPositions = playerData;
+  initTeams(teamData);
   frame = 0;
   const ball = ballPositions[frame];
   const players = playerPositions[frame].players;
@@ -183,7 +206,11 @@ function init(ballData, playerData) {
     success: function(ballData) {
       $.ajax('/data/players/1.json', {
         success: function(playerData) {
-          init(ballData, playerData);
+          $.ajax('/data/teams/1.json', {
+            success: function(teamData) {
+              init(ballData, playerData, teamData);
+            },
+          });
         },
       });
     },
