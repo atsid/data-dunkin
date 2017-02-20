@@ -5,7 +5,8 @@
       "d3": true
     },
     "rules": {
-        "indent": [2, 4]
+        "indent": [1, 2],
+        "no-unused-vars": [1]
     },
     "plugins": [
        "react"
