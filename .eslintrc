@@ -1,0 +1,13 @@
+{
+    "extends": "airbnb",
+    "globals": {
+      "$": true,
+      "d3": true
+    },
+    "rules": {
+        "indent": [2, 4]
+    },
+    "plugins": [
+       "react"
+    ]
+}

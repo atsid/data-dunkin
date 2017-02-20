@@ -1,0 +1,20 @@
+{
+    "name": "transparency-metrics",
+    "version": "0.0.1",
+    "homepage": "https://github.com/atsid/transparency-metrics",
+    "authors": [
+    ],
+    "main": "index.html",
+    "license": "Apache-2.0",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "d3": "~4.6.0",
+        "jquery": "~2.1.4"
+    }
+}
