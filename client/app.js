@@ -22,7 +22,8 @@ function reset() {
   pGhosts = [];
   bGhosts = [];
   const svg = d3.select('svg');
-  svg.selectAll('circle').remove();
+  svg.selectAll('.player-ghosts').remove();
+  svg.selectAll('.ball-ghosts').remove();
 }
 
 function toggle() {
@@ -54,9 +55,7 @@ function tick() {
   }
 
   // update the style for the currently active roster and player "with ball"
-  $('.headshot').removeClass('active');
-  $('.headshot').removeClass('has-ball');
-  $('.headshot').removeClass('selected');
+  $('.headshot').removeClass('active has-ball selected');
   players.forEach((player) => {
     $(`#headshot-${player.pid}`).addClass('active');
   });
