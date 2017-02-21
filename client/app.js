@@ -5,6 +5,7 @@ import config from './config';
 // const T2 = 1610612744;
 const settings = {
   ghosts: true,
+  speed: 2,
 };
 // TODO: manage these groups directly within D3
 let pGhosts = [];
@@ -15,16 +16,30 @@ let handle;
 let frame = 0;
 let t1;
 
-function tick(data) {
+function reset() {
+  frame = 0;
+  pGhosts = [];
+  bGhosts = [];
   const svg = d3.select('svg');
-  frame++;
-  if (frame >= ballPositions.length) {
-    frame = 0;
-    pGhosts = [];
-    bGhosts = [];
-    svg.selectAll('.player-ghosts').remove();
-    svg.selectAll('.ball-ghosts').remove();
+  svg.selectAll('circle').remove();
+}
+
+function toggle() {
+  if (handle > 0) {
+    clearInterval(handle);
+    handle = 0;
+  } else {
+    handle = setInterval(tick, config.interval / (settings.speed * 2));
   }
+}
+
+function tick() {
+  const svg = d3.select('svg');
+  frame = Math.round(frame + (settings.speed / 2));
+  if (frame >= ballPositions.length) {
+    toggle();
+  }
+
   const ball = ballPositions[frame];
   const players = playerPositions[frame].players;
 
@@ -32,7 +47,10 @@ function tick(data) {
   const min = Math.round(ball.gr / 60);
   const sec = ((ball.gr) % 60).toFixed(2);
   $('#gc').html(`${min}:${sec}`);
-  $('#sc').html(`${ball.sc.toFixed(2)}`);
+  // no shot clock during free throws
+  if (ball.sc) {
+    $('#sc').html(`${ball.sc.toFixed(2)}`);
+  }
 
   // update the style for the currently active roster and player "with ball"
   $('.headshot').removeClass('active');
@@ -46,19 +64,19 @@ function tick(data) {
   // update the circles for the ball position and size indicator
   svg.select('#ball')
     .data([ball])
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10));
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y);
   svg.select('#shot')
     .data([ball])
     .attr('r', d => d.r)
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10));
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y);
 
   // update the circles for the player positions
   svg.selectAll('.player')
     .data(players)
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10))
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
     .attr('r', (d) => {
       return d.pid === hasPid ? config.ballPlayerSize : config.playerSize;
     })
@@ -87,8 +105,8 @@ function tick(data) {
       .append('circle')
       .attr('class', 'player-ghosts')
       .attr('r', config.ghostSize)
-      .attr('cx', d => d.x * 10)
-      .attr('cy', d => d.y * 10)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
       .attr('stroke', d => d.tid === t1 ? config.t1Stroke : config.t2Stroke)
       .attr('stroke-opacity', config.ghostOpacity)
       .attr('fill', '#fff')
@@ -100,8 +118,8 @@ function tick(data) {
       .append('circle')
       .attr('class', 'ball-ghosts')
       .attr('r', d => d.r)
-      .attr('cx', d => (d.x * 10))
-      .attr('cy', d => (d.y * 10))
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
       .attr('stroke', config.ballStroke)
       .attr('stroke-opacity', config.ghostOpacity)
       .attr('fill', '#fff')
@@ -114,23 +132,22 @@ function tick(data) {
   }
 }
 
-function toggle() {
-  if (handle > 0) {
-    clearInterval(handle);
-    handle = 0;
-  } else {
-    handle = setInterval(tick, config.interval);
-  }
-}
-
 function initControls() {
   $('#toggle').click(toggle);
+  $('#reset').click(reset);
   $('#ghost-chk').change((e) => {
     settings.ghosts = e.target.checked;
+  });
+  $('.speed').click((e) => {
+    toggle();
+    settings.speed = e.target.value;
+    toggle();
   });
 }
 
 function init(ballData, playerData, teamData) {
+  console.log(ballData.length + ' ball readings');
+  console.log(playerData.length + ' player readings');
   ballPositions = ballData;
   playerPositions = playerData;
   teams.init(teamData);
@@ -157,8 +174,8 @@ function init(ballData, playerData, teamData) {
   // setup the ball color with fixed size
   svg.select('#ball')
     .attr('r', config.ballSize)
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10))
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
     .attr('stroke', config.ballStroke)
     .attr('stroke-opacity', config.ballOpacity)
     .attr('fill', config.ballFill)
@@ -167,8 +184,8 @@ function init(ballData, playerData, teamData) {
   // setup the ball color with variable size to indicate vertical position
   svg.select('#shot')
     .attr('r', d => d.r)
-    .attr('cx', d => d.x * 10)
-    .attr('cy', d => d.y * 10)
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
     .attr('stroke', config.shotStroke)
     .attr('stroke-opacity', config.shotOpacity)
     .attr('fill', config.shotFill)
@@ -177,8 +194,8 @@ function init(ballData, playerData, teamData) {
   // setup the players with team colors and fixed size
   svg.selectAll('.player')
     .attr('r', config.playerSize)
-    .attr('cx', d => d.x * 10)
-    .attr('cy', d => d.y * 10)
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
     .attr('stroke', d => d.tid === t1 ? config.t1Stroke : config.t2Stroke)
     .attr('stroke-opacity', config.playerOpacity)
     .attr('fill', d => d.tid === t1 ? config.t1Fill : config.t2Fill)
@@ -189,9 +206,9 @@ function init(ballData, playerData, teamData) {
 
 (function() {
   initControls();
-  $.ajax('/data/ball/1.json', {
+  $.ajax('/data/ball/q1.json', {
     success: function(ballData) {
-      $.ajax('/data/players/1.json', {
+      $.ajax('/data/players/q1.json', {
         success: function(playerData) {
           $.ajax('/data/teams/1.json', {
             success: function(teamData) {

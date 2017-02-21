@@ -6,7 +6,7 @@ module.exports = {
   // TODO: pull from CSS
   width: 940,
   height: 500,
-  interval: 40, // set FPS to match data readings of 25 FPS
+  interval: 120, // set FPS to match data readings of 25 FPS (/ 2 due to subsampling)
   ballSize: 4,
   playerSize: 4,
   ghostSize: 2,
@@ -23,6 +23,6 @@ module.exports = {
   t1Fill: '#C39BD3',
   t2Stroke: '#16A085',
   t2Fill: '#73C6B6',
-  playerOpacity: 0.7,
-  ghostOpacity: 0.2,
+  playerOpacity: 0.8,
+  ghostOpacity: 0.3,
 };
