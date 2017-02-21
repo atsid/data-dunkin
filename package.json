@@ -1,4 +1,17 @@
 {
+  "name": "data-dunkin",
+  "version": "0.0.1",
+  "description": "NBA Player motion viz and analytics",
+  "main": "gulpfile.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atsid/data-dunkin.git"
+  },
+  "authors": [
+    "bryantower",
+    "natoverse"
+  ],
+  "license": "Apache-2.0",
   "scripts": {
     "test": "node_modules/.bin/gulp test",
     "start": "node_modules/.bin/gulp serve",
