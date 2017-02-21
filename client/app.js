@@ -5,7 +5,7 @@ import config from './config';
 // const T2 = 1610612744;
 const settings = {
   ghosts: true,
-  speed: 2,
+  speed: 1,
 };
 // TODO: manage these groups directly within D3
 let pGhosts = [];
@@ -15,6 +15,7 @@ let playerPositions;
 let handle;
 let frame = 0;
 let t1;
+let selectedPid = 0;
 
 function reset() {
   frame = 0;
@@ -29,13 +30,13 @@ function toggle() {
     clearInterval(handle);
     handle = 0;
   } else {
-    handle = setInterval(tick, config.interval / (settings.speed * 2));
+    handle = setInterval(tick, config.interval / (settings.speed));
   }
 }
 
 function tick() {
   const svg = d3.select('svg');
-  frame = Math.round(frame + (settings.speed / 2));
+  frame++; // = Math.round(frame + (settings.speed / 2));
   if (frame >= ballPositions.length) {
     toggle();
   }
@@ -58,7 +59,7 @@ function tick() {
   players.forEach((player) => {
     $(`#headshot-${player.pid}`).addClass('active');
   });
-  const hasPid = 2544;
+  const hasPid = ball.pid;
   $(`#headshot-${hasPid}`).addClass('has-ball');
 
   // update the circles for the ball position and size indicator
@@ -78,21 +79,42 @@ function tick() {
     .attr('cx', d => d.x)
     .attr('cy', d => d.y)
     .attr('r', (d) => {
-      return d.pid === hasPid ? config.ballPlayerSize : config.playerSize;
+      if (d.pid === hasPid) {
+        return config.ballPlayerSize;
+      }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerSize;
+      }
+      return config.playerSize;
     })
     .attr('fill-opacity', (d) => {
-      return d.pid === hasPid ? config.ballPlayerOpacity : config.playerOpacity;
+      if (d.pid === hasPid) {
+        return config.ballPlayerOpacity;
+      }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerOpacity;
+      }
+      return config.playerOpacity;
     })
     .attr('stroke', (d) => {
       if (d.pid === hasPid) {
         return config.ballPlayerColor;
       }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerColor;
+      }
       return d.tid === t1 ? config.t1Stroke : config.t2Stroke;
     })
-    .attr('fill', (d) => {
+    .attr('stroke-width', (d) => {
       if (d.pid === hasPid) {
-        return config.ballPlayerColor;
+        return config.ballPlayerStrokeWidth;
       }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerStrokeWidth;
+      }
+      return config.strokeWidth;
+    })
+    .attr('fill', (d) => {
       return d.tid === t1 ? config.t1Fill : config.t2Fill;
     });
 
@@ -142,6 +164,12 @@ function initControls() {
     toggle();
     settings.speed = e.target.value;
     toggle();
+  });
+  $('.headshot').click((e) => {
+    console.log(e);
+    $('.headshot').removeClass('selected');
+    $(this).addClass('selected');
+    selectedPid = e.target.id.replace('headshot-', '') * 1;
   });
 }
 
@@ -201,11 +229,11 @@ function init(ballData, playerData, teamData) {
     .attr('fill', d => d.tid === t1 ? config.t1Fill : config.t2Fill)
     .attr('fill-opacity', config.playerOpacity);
 
+  initControls();
   toggle();
 }
 
 (function() {
-  initControls();
   $.ajax('/data/ball/q1.json', {
     success: function(ballData) {
       $.ajax('/data/players/q1.json', {

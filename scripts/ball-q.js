@@ -13,6 +13,7 @@ fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
       ts: moment[1],
       gr: moment[2],
       sc: moment[3],
+      pid: moment[4],
       x: Math.round(moment[5][0][2] * 10),
       y: Math.round(moment[5][0][3] * 10),
       r: moment[5][0][4],
