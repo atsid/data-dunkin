@@ -24,7 +24,10 @@ We used both Python and JavaScript (Node.js) scripts to pre-process the data. It
 
 * Install Node.js and Python
 * Drop your unzipped data file (should be *.json) into a new "data" directory in the project root (will be .gitignored)
-* Run the Python enrichment on the original file to subsample and do the spatial join TODO: add in Python instructions for enrichment and filtering.
+* Run the Python enrichment on the original file to subsample and do the spatial join. By default it drops half of the moments to make it quicker for deployment and debugging.  You can tell it to use all of the data by adding the command line arguments `--processall True` The CSV file is in a format that is easy to plot.  The JSON file is enriched with the player that pocesses the ball.
+  * `cd python`
+  * `python loaddata.py  --infile ../data/file.json  --csvfile ../data/filename.csv --jsonfile ../data/filename.json`
+  
 * Run a series of node scripts to split out the large file, collate into quarters, and summarize the ball and player data for loading into the browser:
   * `cd scripts`
   * `node split-events.js`
