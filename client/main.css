@@ -47,8 +47,8 @@ img {
     opacity: 1.0;
 }
 .has-ball {
-    border: 3px solid #C0392B;
+    border-top: 4px solid #C0392B;
 }
 .selected {
-    border: 3px solid #F1C40F;
+    border-bottom: 4px solid #F1C40F;
 }

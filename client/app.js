@@ -56,11 +56,13 @@ function tick() {
   // update the style for the currently active roster and player "with ball"
   $('.headshot').removeClass('active');
   $('.headshot').removeClass('has-ball');
+  $('.headshot').removeClass('selected');
   players.forEach((player) => {
     $(`#headshot-${player.pid}`).addClass('active');
   });
   const hasPid = ball.pid;
   $(`#headshot-${hasPid}`).addClass('has-ball');
+  $(`#headshot-${selectedPid}`).addClass('selected');
 
   // update the circles for the ball position and size indicator
   svg.select('#ball')
@@ -166,10 +168,12 @@ function initControls() {
     toggle();
   });
   $('.headshot').click((e) => {
-    console.log(e);
-    $('.headshot').removeClass('selected');
-    $(this).addClass('selected');
-    selectedPid = e.target.id.replace('headshot-', '') * 1;
+    const newPid = e.target.id.replace('headshot-', '') * 1;
+    if (newPid === selectedPid) {
+      selectedPid = 0;
+    } else {
+      selectedPid = newPid;
+    }
   });
 }
 
