@@ -6,40 +6,22 @@ import math
 
 parser = argparse.ArgumentParser(description='load an NBA game to a JSON object')
 parser.add_argument('--infile', help='file representing an NBA game', required=True, type=argparse.FileType('r'))
-parser.add_argument('--ofile', help='file representing a csv file for conversion', required=True, type=argparse.FileType('w'))
+parser.add_argument('--csvfile', help='file representing a csv file for conversion', required=True, type=argparse.FileType('w'))
+parser.add_argument('--jsonfile', help='file representing a slightly marked up json file', required=True, type=argparse.FileType('w'))
+parser.add_argument('--processalldata', help='Will drop half of the moments if true', required=False, type=bool, default=False)
 
 args = parser.parse_args()
 infile = args.infile
-ofile = args.ofile
+csvfile = args.csvfile
+jsonfile = args.jsonfile
+processAll = args.processalldata
 
 
 jsonobj = json.load(infile)
-
-#for key in jsonobj.keys():
-#	print key
-#
-
-#print jsonobj['gamedate']
-#print jsonobj['gameid']
 events = jsonobj['events']
-
-
-#print len(events)
-#for x in events[0].keys():
-#	print x
-
 gsw = events[0]['visitor']
 cavs = events[0]['home']
-
-
-#print gsw
-#print events[0]['eventId']
-#print events[0]
-
 moments = events[0]['moments']
-#print len(moments)
-
-#print moments[0]
 
 def distanceToBall(ballx, bally, playerx, playery):
 	xdiff = ballx - playerx
@@ -47,13 +29,15 @@ def distanceToBall(ballx, bally, playerx, playery):
 	return math.sqrt(xdiff* xdiff + ydiff*ydiff)
 	
 
-#writer = csv.writer(ofile)
+writer = csv.writer(csvfile)
 header = ['period', 'gameTime', 'shotTime', 'teamId', 'playerId', 'x', 'y', 'radius', 'hasBall', 'ballDist']
-#writer.writerow(header)
-print len(events)
+writer.writerow(header)
+print 'Total events: %d' % len(events)
 sumofMoments = 0
 for event in events:
-	event['moments'] = event['moments'][1::2]
+	# skip every other moment to filter data
+	if not processAll:
+		event['moments'] = event['moments'][1::2]
 	for index, mo in enumerate(event['moments']):
 		sumofMoments += 1
 		#print mo
@@ -74,22 +58,22 @@ for event in events:
 			ballDist.append(dist)
 		mo[4] = minPID
 		#print minDist, minIndex, len(ballDist)
-		#for idx, x in enumerate(mo[5]):
-		#	newrow = row + x
-		#	hasBall = False
-		#	if minIndex == idx-1:
-		#		hasBall = True
-		#	if idx == 0:
-		#		newrow.append(False)
-		#		newrow.append(0.0)
-		#	else:
-		#		newrow.append(hasBall)
-		#		newrow.append(ballDist[idx -1])
-		#		#newrow.append(minDist)
-		#		#newrow.append(minPID)
-		#	writer.writerow(newrow)
+		for idx, x in enumerate(mo[5]):
+			newrow = row + x
+			hasBall = False
+			if minIndex == idx-1:
+				hasBall = True
+			if idx == 0:
+				newrow.append(False)
+				newrow.append(0.0)
+			else:
+				newrow.append(hasBall)
+				newrow.append(ballDist[idx -1])
+				#newrow.append(minDist)
+				#newrow.append(minPID)
+			writer.writerow(newrow)
 
-json.dump(jsonobj, ofile)
+json.dump(jsonobj, jsonfile)
 
 ##########33333
 #Moment description
@@ -100,6 +84,4 @@ json.dump(jsonobj, ofile)
 #I don't know what the 5th item represents.
 
 
-
-
-print sumofMoments
+print 'Total Moments processed: %d' % sumofMoments
