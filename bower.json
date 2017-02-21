@@ -1,7 +1,7 @@
 {
-    "name": "transparency-metrics",
+    "name": "data-dunkin",
     "version": "0.0.1",
-    "homepage": "https://github.com/atsid/transparency-metrics",
+    "homepage": "https://github.com/atsid/data-dunkin",
     "authors": [
     ],
     "main": "index.html",
