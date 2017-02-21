@@ -15,9 +15,9 @@ ofile = args.ofile
 
 jsonobj = json.load(infile)
 
-for key in jsonobj.keys():
-	print key
-
+#for key in jsonobj.keys():
+#	print key
+#
 
 #print jsonobj['gamedate']
 #print jsonobj['gameid']
@@ -25,8 +25,8 @@ events = jsonobj['events']
 
 
 #print len(events)
-for x in events[0].keys():
-	print x
+#for x in events[0].keys():
+#	print x
 
 gsw = events[0]['visitor']
 cavs = events[0]['home']
@@ -37,9 +37,9 @@ cavs = events[0]['home']
 #print events[0]
 
 moments = events[0]['moments']
-print len(moments)
+#print len(moments)
 
-print moments[0]
+#print moments[0]
 
 def distanceToBall(ballx, bally, playerx, playery):
 	xdiff = ballx - playerx
@@ -47,18 +47,22 @@ def distanceToBall(ballx, bally, playerx, playery):
 	return math.sqrt(xdiff* xdiff + ydiff*ydiff)
 	
 
-writer = csv.writer(ofile)
+#writer = csv.writer(ofile)
 header = ['period', 'gameTime', 'shotTime', 'teamId', 'playerId', 'x', 'y', 'radius', 'hasBall', 'ballDist']
-writer.writerow(header)
+#writer.writerow(header)
+print len(events)
+sumofMoments = 0
 for event in events:
-	for mo in event['moments']:
+	event['moments'] = event['moments'][1::2]
+	for index, mo in enumerate(event['moments']):
+		sumofMoments += 1
 		#print mo
 		if len(mo) != 6:
 			print 'skipping moments of len %d' % len(mo)
 			continue
 		row = [mo[0], mo[2], mo[3]]
 		if len(mo[5]) != 11:
-			print 'wrong number of players: %d' % len(mo[5])
+			#print 'wrong number of players: %d' % len(mo[5])
 			continue
 		ballx, bally = mo[5][0][2:4]
 		ballDist = []
@@ -66,28 +70,26 @@ for event in events:
 		for idx, x in enumerate(mo[5][1:]):
 			dist = distanceToBall(ballx, bally, x[2], x[3])
 			if dist < minDist:
-				minDist = dist
-				minIndex = idx
-				minPID = x[1]
+				minDist, minIndex, minPID = dist, idx, x[1] 
 			ballDist.append(dist)
 		mo[4] = minPID
 		#print minDist, minIndex, len(ballDist)
-		for idx, x in enumerate(mo[5]):
-			newrow = row + x
-			hasBall = False
-			if minIndex == idx-1:
-				hasBall = True
-			if idx == 0:
-				newrow.append(False)
-				newrow.append(0.0)
-			else:
-				newrow.append(hasBall)
-				newrow.append(ballDist[idx -1])
-				#newrow.append(minDist)
-				#newrow.append(minPID)
-			writer.writerow(newrow)
+		#for idx, x in enumerate(mo[5]):
+		#	newrow = row + x
+		#	hasBall = False
+		#	if minIndex == idx-1:
+		#		hasBall = True
+		#	if idx == 0:
+		#		newrow.append(False)
+		#		newrow.append(0.0)
+		#	else:
+		#		newrow.append(hasBall)
+		#		newrow.append(ballDist[idx -1])
+		#		#newrow.append(minDist)
+		#		#newrow.append(minPID)
+		#	writer.writerow(newrow)
 
-#json.dump(jsonobj, ofile)
+json.dump(jsonobj, ofile)
 
 ##########33333
 #Moment description
@@ -99,3 +101,5 @@ for event in events:
 
 
 
+
+print sumofMoments
