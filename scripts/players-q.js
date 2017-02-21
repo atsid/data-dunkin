@@ -1,10 +1,10 @@
 const fs = require('fs');
 console.log('processing players');
-const EVENT = '1';
+const EVENT = 'q1';
 fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
   const json = JSON.parse(content);
   console.log(Object.keys(json));
-  const moments = json.moments;
+  const moments = json; // json.moments;
   const playerMoments = moments.map((moment) => {
     // moments is an array of arrays
     // first 5 entries are data about the moment
@@ -16,8 +16,8 @@ fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
         id: `${player[0]}-${player[1]}`,
         tid: player[0],
         pid: player[1],
-        x: player[2],
-        y: player[3],
+        x: Math.round(player[2] * 10),
+        y: Math.round(player[3] * 10),
       };
     });
     return {
@@ -27,7 +27,7 @@ fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
       players: players,
     }
   });
-  fs.writeFile(`../data/players/${EVENT}.json`, JSON.stringify(playerMoments, null, 2), (e) => {
+  fs.writeFile(`../data/players/${EVENT}.json`, JSON.stringify(playerMoments), (e) => {
     if (e) {
       console.log(e);
     } else {

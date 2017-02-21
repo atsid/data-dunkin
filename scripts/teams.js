@@ -1,5 +1,5 @@
 const fs = require('fs');
-console.log('loading');
+console.log('processing teams');
 const EVENT = '1';
 fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
   const json = JSON.parse(content);
@@ -19,6 +19,10 @@ fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
     visitor: visitor,
   };
   fs.writeFile(`../data/teams/${EVENT}.json`, JSON.stringify(output, null, 2), (e) => {
-    console.log(e);
+    if (e) {
+      console.log(e);
+    } else {
+      console.log('-done');
+    }
   });
 });

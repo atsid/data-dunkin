@@ -1,33 +1,11 @@
-// actual NBA court dimenstions in feet
-const COURT_WIDTH = 94;
-const COURT_HEIGHT = 50;
-// svg court image background from NBA, in pixels
-// TODO: pull from CSS
-const WIDTH = 940;
-const HEIGHT = 500;
-const INTERVAL = 40; // set FPS to match data readings of 25 FPS
+import teams from './teams';
+import config from './config';
 // TODO: extract from retrieved lists at runtime
-const T1 = 1610612739;
-const T2 = 1610612744;
-const BALL_SIZE = 4;
-const PLAYER_SIZE = 4;
-const GHOST_SIZE = 2;
-const palette = {
-  ballStroke: '#D35400',
-  ballFill: '#DC7633',
-  ballOpacity: 0.9,
-  shotStroke: '#444',
-  shotFill: '#999',
-  shotOpacity: 0.2,
-  t1Stroke: '#9B59B6',
-  t1Fill: '#C39BD3',
-  t2Stroke: '#16A085',
-  t2Fill: '#73C6B6',
-  playerOpacity: 0.7,
-  ghostOpacity: 0.2,
-};
-const config = {
+// const T1 = 1610612739;
+// const T2 = 1610612744;
+const settings = {
   ghosts: true,
+  speed: 1,
 };
 // TODO: manage these groups directly within D3
 let pGhosts = [];
@@ -36,17 +14,34 @@ let ballPositions;
 let playerPositions;
 let handle;
 let frame = 0;
+let t1;
+let selectedPid = 0;
 
-function tick(data) {
+function reset() {
+  frame = 0;
+  pGhosts = [];
+  bGhosts = [];
   const svg = d3.select('svg');
-  frame++;
-  if (frame >= ballPositions.length) {
-    frame = 0;
-    pGhosts = [];
-    bGhosts = [];
-    svg.selectAll('.player-ghosts').remove();
-    svg.selectAll('.ball-ghosts').remove();
+  svg.selectAll('.player-ghosts').remove();
+  svg.selectAll('.ball-ghosts').remove();
+}
+
+function toggle() {
+  if (handle > 0) {
+    clearInterval(handle);
+    handle = 0;
+  } else {
+    handle = setInterval(tick, config.interval / (settings.speed));
   }
+}
+
+function tick() {
+  const svg = d3.select('svg');
+  frame++; // = Math.round(frame + (settings.speed / 2));
+  if (frame >= ballPositions.length) {
+    toggle();
+  }
+
   const ball = ballPositions[frame];
   const players = playerPositions[frame].players;
 
@@ -54,38 +49,89 @@ function tick(data) {
   const min = Math.round(ball.gr / 60);
   const sec = ((ball.gr) % 60).toFixed(2);
   $('#gc').html(`${min}:${sec}`);
-  $('#sc').html(`${ball.sc.toFixed(2)}`);
+  // no shot clock during free throws
+  if (ball.sc) {
+    $('#sc').html(`${ball.sc.toFixed(2)}`);
+  }
+
+  // update the style for the currently active roster and player "with ball"
+  $('.headshot').removeClass('active has-ball selected');
+  players.forEach((player) => {
+    $(`#headshot-${player.pid}`).addClass('active');
+  });
+  const hasPid = ball.pid;
+  $(`#headshot-${hasPid}`).addClass('has-ball');
+  $(`#headshot-${selectedPid}`).addClass('selected');
 
   // update the circles for the ball position and size indicator
   svg.select('#ball')
     .data([ball])
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10));
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y);
   svg.select('#shot')
     .data([ball])
     .attr('r', d => d.r)
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10));
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y);
 
   // update the circles for the player positions
   svg.selectAll('.player')
     .data(players)
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10));
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
+    .attr('r', (d) => {
+      if (d.pid === hasPid) {
+        return config.ballPlayerSize;
+      }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerSize;
+      }
+      return config.playerSize;
+    })
+    .attr('fill-opacity', (d) => {
+      if (d.pid === hasPid) {
+        return config.ballPlayerOpacity;
+      }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerOpacity;
+      }
+      return config.playerOpacity;
+    })
+    .attr('stroke', (d) => {
+      if (d.pid === hasPid) {
+        return config.ballPlayerColor;
+      }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerColor;
+      }
+      return d.tid === t1 ? config.t1Stroke : config.t2Stroke;
+    })
+    .attr('stroke-width', (d) => {
+      if (d.pid === hasPid) {
+        return config.ballPlayerStrokeWidth;
+      }
+      if (d.pid === selectedPid) {
+        return config.selectedPlayerStrokeWidth;
+      }
+      return config.strokeWidth;
+    })
+    .attr('fill', (d) => {
+      return d.tid === t1 ? config.t1Fill : config.t2Fill;
+    });
 
   // update the ghosts
-  if (config.ghosts) {
+  if (settings.ghosts) {
     pGhosts = pGhosts.concat(players);
     svg.selectAll('.player-ghosts')
       .data(pGhosts)
       .enter()
       .append('circle')
       .attr('class', 'player-ghosts')
-      .attr('r', GHOST_SIZE)
-      .attr('cx', d => d.x * 10)
-      .attr('cy', d => d.y * 10)
-      .attr('stroke', d => d.tid === T1 ? palette.t1Stroke : palette.t2Stroke)
-      .attr('stroke-opacity', palette.ghostOpacity)
+      .attr('r', config.ghostSize)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('stroke', d => d.tid === t1 ? config.t1Stroke : config.t2Stroke)
+      .attr('stroke-opacity', config.ghostOpacity)
       .attr('fill', '#fff')
       .attr('fill-opacity', 0.0);
     bGhosts = bGhosts.concat([ball]);
@@ -95,10 +141,10 @@ function tick(data) {
       .append('circle')
       .attr('class', 'ball-ghosts')
       .attr('r', d => d.r)
-      .attr('cx', d => (d.x * 10))
-      .attr('cy', d => (d.y * 10))
-      .attr('stroke', palette.ballStroke)
-      .attr('stroke-opacity', palette.ghostOpacity)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('stroke', config.ballStroke)
+      .attr('stroke-opacity', config.ghostOpacity)
       .attr('fill', '#fff')
       .attr('fill-opacity', 0.0);
   } else {
@@ -109,45 +155,34 @@ function tick(data) {
   }
 }
 
-function toggle() {
-  if (handle > 0) {
-    clearInterval(handle);
-    handle = 0;
-  } else {
-    handle = setInterval(tick, INTERVAL);
-  }
-}
-
 function initControls() {
   $('#toggle').click(toggle);
+  $('#reset').click(reset);
   $('#ghost-chk').change((e) => {
-    config.ghosts = e.target.checked;
+    settings.ghosts = e.target.checked;
+  });
+  $('.speed').click((e) => {
+    toggle();
+    settings.speed = e.target.value;
+    toggle();
+  });
+  $('.headshot').click((e) => {
+    const newPid = e.target.id.replace('headshot-', '') * 1;
+    if (newPid === selectedPid) {
+      selectedPid = 0;
+    } else {
+      selectedPid = newPid;
+    }
   });
 }
 
-function initTeams(teamData) {
-  function p(player) {
-    return `<div style="display: inline-block;" id="${player.playerid}" tooltip="${player.firstname} ${player.lastname}">
-                <img class="headshot" src="./client/images/headshots/${player.playerid}.png"
-                    title="${player.firstname} ${player.lastname}"
-                />
-            </div>`;
-  }
-
-  const homes = teamData.home.players.map(p);
-  $('#home').html(`<div>${teamData.home.name}</div>
-                    ${homes.join(' ')}
-                  `);
-  const visitors = teamData.visitor.players.map(p);
-  $('#visitor').html(`<div>${teamData.visitor.name}</div>
-                    ${visitors.join(' ')}
-                     `);
-}
-
 function init(ballData, playerData, teamData) {
+  console.log(ballData.length + ' ball readings');
+  console.log(playerData.length + ' player readings');
   ballPositions = ballData;
   playerPositions = playerData;
-  initTeams(teamData);
+  teams.init(teamData);
+  t1 = teamData.home.teamid;
   frame = 0;
   const ball = ballPositions[frame];
   const players = playerPositions[frame].players;
@@ -169,42 +204,42 @@ function init(ballData, playerData, teamData) {
 
   // setup the ball color with fixed size
   svg.select('#ball')
-    .attr('r', BALL_SIZE)
-    .attr('cx', d => (d.x * 10))
-    .attr('cy', d => (d.y * 10))
-    .attr('stroke', palette.ballStroke)
-    .attr('stroke-opacity', palette.ballOpacity)
-    .attr('fill', palette.ballFill)
-    .attr('fill-opacity', palette.ballOpacity);
+    .attr('r', config.ballSize)
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
+    .attr('stroke', config.ballStroke)
+    .attr('stroke-opacity', config.ballOpacity)
+    .attr('fill', config.ballFill)
+    .attr('fill-opacity', config.ballOpacity);
 
   // setup the ball color with variable size to indicate vertical position
   svg.select('#shot')
     .attr('r', d => d.r)
-    .attr('cx', d => d.x * 10)
-    .attr('cy', d => d.y * 10)
-    .attr('stroke', palette.shotStroke)
-    .attr('stroke-opacity', palette.shotOpacity)
-    .attr('fill', palette.shotFill)
-    .attr('fill-opacity', palette.shotOpacity);
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
+    .attr('stroke', config.shotStroke)
+    .attr('stroke-opacity', config.shotOpacity)
+    .attr('fill', config.shotFill)
+    .attr('fill-opacity', config.shotOpacity);
 
   // setup the players with team colors and fixed size
   svg.selectAll('.player')
-    .attr('r', PLAYER_SIZE)
-    .attr('cx', d => d.x * 10)
-    .attr('cy', d => d.y * 10)
-    .attr('stroke', d => d.tid === T1 ? palette.t1Stroke : palette.t2Stroke)
-    .attr('stroke-opacity', palette.playerOpacity)
-    .attr('fill', d => d.tid === T1 ? palette.t1Fill : palette.t2Fill)
-    .attr('fill-opacity', palette.playerOpacity);
+    .attr('r', config.playerSize)
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
+    .attr('stroke', d => d.tid === t1 ? config.t1Stroke : config.t2Stroke)
+    .attr('stroke-opacity', config.playerOpacity)
+    .attr('fill', d => d.tid === t1 ? config.t1Fill : config.t2Fill)
+    .attr('fill-opacity', config.playerOpacity);
 
+  initControls();
   toggle();
 }
 
 (function() {
-  initControls();
-  $.ajax('/data/ball/1.json', {
+  $.ajax('/data/ball/q1.json', {
     success: function(ballData) {
-      $.ajax('/data/players/1.json', {
+      $.ajax('/data/players/q1.json', {
         success: function(playerData) {
           $.ajax('/data/teams/1.json', {
             success: function(teamData) {
