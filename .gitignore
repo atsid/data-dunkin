@@ -1,10 +1,7 @@
-node_modules/
-dist/
 .publish/
 npm-debug.log
 .idea
 *.swp
-bower_components
 jsconfig.json
-build/
 data/
+node_modules

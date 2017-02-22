@@ -27,7 +27,7 @@ fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
       players: players,
     }
   });
-  fs.writeFile(`../data/players/${EVENT}.json`, JSON.stringify(playerMoments), (e) => {
+  fs.writeFile(`../dist/players-${EVENT}.json`, JSON.stringify(playerMoments), (e) => {
     if (e) {
       console.log(e);
     } else {

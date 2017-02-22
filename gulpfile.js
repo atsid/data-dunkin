@@ -94,7 +94,7 @@ gulp.task('build', (cb) => {
 gulp.task('serve-server', () => {
     gulp.src(config.src.all)
         .pipe(webserver({
-            path: '/',
+            path: '/data-dunkin/',
             livereload: false,
             defaultFile: 'index.html',
             open: false,

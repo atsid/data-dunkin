@@ -237,11 +237,11 @@ function init(ballData, playerData, teamData) {
 }
 
 (function() {
-  $.ajax('/data/ball/q1.json', {
+  $.ajax('dist/ball-q1.json', {
     success: function(ballData) {
-      $.ajax('/data/players/q1.json', {
+      $.ajax('dist/players-q1.json', {
         success: function(playerData) {
-          $.ajax('/data/teams/1.json', {
+          $.ajax('dist/teams.json', {
             success: function(teamData) {
               init(ballData, playerData, teamData);
             },

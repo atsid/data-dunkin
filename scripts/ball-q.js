@@ -19,7 +19,7 @@ fs.readFile(`../data/events/${EVENT}.json`, 'utf8', (err, content) => {
       r: moment[5][0][4],
     }
   });
-  fs.writeFile(`../data/ball/${EVENT}.json`, JSON.stringify(ballMoments), (e) => {
+  fs.writeFile(`../dist/ball-${EVENT}.json`, JSON.stringify(ballMoments), (e) => {
     if (e) {
       console.log(e);
     } else {

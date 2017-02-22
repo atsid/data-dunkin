@@ -1,0 +1,384 @@
+{
+  "home": {
+    "abbreviation": "CLE",
+    "players": [
+      {
+        "playerid": 201567,
+        "lastname": "Love",
+        "jersey": "0",
+        "firstname": "Kevin",
+        "position": "F"
+      },
+      {
+        "playerid": 2592,
+        "lastname": "Jones",
+        "jersey": "1",
+        "firstname": "James",
+        "position": "G-F"
+      },
+      {
+        "playerid": 202681,
+        "lastname": "Irving",
+        "jersey": "2",
+        "firstname": "Kyrie",
+        "position": "G"
+      },
+      {
+        "playerid": 202697,
+        "lastname": "Shumpert",
+        "jersey": "4",
+        "firstname": "Iman",
+        "position": "G"
+      },
+      {
+        "playerid": 2747,
+        "lastname": "Smith",
+        "jersey": "5",
+        "firstname": "J.R.",
+        "position": "G-F"
+      },
+      {
+        "playerid": 203521,
+        "lastname": "Dellavedova",
+        "jersey": "8",
+        "firstname": "Matthew",
+        "position": "G"
+      },
+      {
+        "playerid": 203099,
+        "lastname": "Cunningham",
+        "jersey": "9",
+        "firstname": "Jared",
+        "position": "G"
+      },
+      {
+        "playerid": 202684,
+        "lastname": "Thompson",
+        "jersey": "13",
+        "firstname": "Tristan",
+        "position": "C-F"
+      },
+      {
+        "playerid": 2760,
+        "lastname": "Varejao",
+        "jersey": "17",
+        "firstname": "Anderson",
+        "position": "F"
+      },
+      {
+        "playerid": 202389,
+        "lastname": "Mozgov",
+        "jersey": "20",
+        "firstname": "Timofey",
+        "position": "C"
+      },
+      {
+        "playerid": 2544,
+        "lastname": "James",
+        "jersey": "23",
+        "firstname": "LeBron",
+        "position": "F"
+      },
+      {
+        "playerid": 2210,
+        "lastname": "Jefferson",
+        "jersey": "24",
+        "firstname": "Richard",
+        "position": "F"
+      },
+      {
+        "playerid": 2590,
+        "lastname": "Williams",
+        "jersey": "52",
+        "firstname": "Mo",
+        "position": "G"
+      }
+    ],
+    "teamid": 1610612739,
+    "name": "Cleveland Cavaliers",
+    "hash": {
+      "2210": {
+        "playerid": 2210,
+        "lastname": "Jefferson",
+        "jersey": "24",
+        "firstname": "Richard",
+        "position": "F"
+      },
+      "2544": {
+        "playerid": 2544,
+        "lastname": "James",
+        "jersey": "23",
+        "firstname": "LeBron",
+        "position": "F"
+      },
+      "2590": {
+        "playerid": 2590,
+        "lastname": "Williams",
+        "jersey": "52",
+        "firstname": "Mo",
+        "position": "G"
+      },
+      "2592": {
+        "playerid": 2592,
+        "lastname": "Jones",
+        "jersey": "1",
+        "firstname": "James",
+        "position": "G-F"
+      },
+      "2747": {
+        "playerid": 2747,
+        "lastname": "Smith",
+        "jersey": "5",
+        "firstname": "J.R.",
+        "position": "G-F"
+      },
+      "2760": {
+        "playerid": 2760,
+        "lastname": "Varejao",
+        "jersey": "17",
+        "firstname": "Anderson",
+        "position": "F"
+      },
+      "201567": {
+        "playerid": 201567,
+        "lastname": "Love",
+        "jersey": "0",
+        "firstname": "Kevin",
+        "position": "F"
+      },
+      "202389": {
+        "playerid": 202389,
+        "lastname": "Mozgov",
+        "jersey": "20",
+        "firstname": "Timofey",
+        "position": "C"
+      },
+      "202681": {
+        "playerid": 202681,
+        "lastname": "Irving",
+        "jersey": "2",
+        "firstname": "Kyrie",
+        "position": "G"
+      },
+      "202684": {
+        "playerid": 202684,
+        "lastname": "Thompson",
+        "jersey": "13",
+        "firstname": "Tristan",
+        "position": "C-F"
+      },
+      "202697": {
+        "playerid": 202697,
+        "lastname": "Shumpert",
+        "jersey": "4",
+        "firstname": "Iman",
+        "position": "G"
+      },
+      "203099": {
+        "playerid": 203099,
+        "lastname": "Cunningham",
+        "jersey": "9",
+        "firstname": "Jared",
+        "position": "G"
+      },
+      "203521": {
+        "playerid": 203521,
+        "lastname": "Dellavedova",
+        "jersey": "8",
+        "firstname": "Matthew",
+        "position": "G"
+      }
+    }
+  },
+  "visitor": {
+    "abbreviation": "GSW",
+    "players": [
+      {
+        "playerid": 201574,
+        "lastname": "Thompson",
+        "jersey": "1",
+        "firstname": "Jason",
+        "position": "F-C"
+      },
+      {
+        "playerid": 201575,
+        "lastname": "Rush",
+        "jersey": "4",
+        "firstname": "Brandon",
+        "position": "F-G"
+      },
+      {
+        "playerid": 201578,
+        "lastname": "Speights",
+        "jersey": "5",
+        "firstname": "Marreese",
+        "position": "F-C"
+      },
+      {
+        "playerid": 2738,
+        "lastname": "Iguodala",
+        "jersey": "9",
+        "firstname": "Andre",
+        "position": "G-F"
+      },
+      {
+        "playerid": 202691,
+        "lastname": "Thompson",
+        "jersey": "11",
+        "firstname": "Klay",
+        "position": "G"
+      },
+      {
+        "playerid": 101106,
+        "lastname": "Bogut",
+        "jersey": "12",
+        "firstname": "Andrew",
+        "position": "C"
+      },
+      {
+        "playerid": 2571,
+        "lastname": "Barbosa",
+        "jersey": "19",
+        "firstname": "Leandro",
+        "position": "G"
+      },
+      {
+        "playerid": 203546,
+        "lastname": "Clark",
+        "jersey": "21",
+        "firstname": "Ian",
+        "position": "G"
+      },
+      {
+        "playerid": 203110,
+        "lastname": "Green",
+        "jersey": "23",
+        "firstname": "Draymond",
+        "position": "F"
+      },
+      {
+        "playerid": 201939,
+        "lastname": "Curry",
+        "jersey": "30",
+        "firstname": "Stephen",
+        "position": "G"
+      },
+      {
+        "playerid": 203105,
+        "lastname": "Ezeli",
+        "jersey": "31",
+        "firstname": "Festus",
+        "position": "C"
+      },
+      {
+        "playerid": 2733,
+        "lastname": "Livingston",
+        "jersey": "34",
+        "firstname": "Shaun",
+        "position": "G"
+      },
+      {
+        "playerid": 203084,
+        "lastname": "Barnes",
+        "jersey": "40",
+        "firstname": "Harrison",
+        "position": "F"
+      }
+    ],
+    "teamid": 1610612744,
+    "name": "Golden State Warriors",
+    "hash": {
+      "2571": {
+        "playerid": 2571,
+        "lastname": "Barbosa",
+        "jersey": "19",
+        "firstname": "Leandro",
+        "position": "G"
+      },
+      "2733": {
+        "playerid": 2733,
+        "lastname": "Livingston",
+        "jersey": "34",
+        "firstname": "Shaun",
+        "position": "G"
+      },
+      "2738": {
+        "playerid": 2738,
+        "lastname": "Iguodala",
+        "jersey": "9",
+        "firstname": "Andre",
+        "position": "G-F"
+      },
+      "101106": {
+        "playerid": 101106,
+        "lastname": "Bogut",
+        "jersey": "12",
+        "firstname": "Andrew",
+        "position": "C"
+      },
+      "201574": {
+        "playerid": 201574,
+        "lastname": "Thompson",
+        "jersey": "1",
+        "firstname": "Jason",
+        "position": "F-C"
+      },
+      "201575": {
+        "playerid": 201575,
+        "lastname": "Rush",
+        "jersey": "4",
+        "firstname": "Brandon",
+        "position": "F-G"
+      },
+      "201578": {
+        "playerid": 201578,
+        "lastname": "Speights",
+        "jersey": "5",
+        "firstname": "Marreese",
+        "position": "F-C"
+      },
+      "201939": {
+        "playerid": 201939,
+        "lastname": "Curry",
+        "jersey": "30",
+        "firstname": "Stephen",
+        "position": "G"
+      },
+      "202691": {
+        "playerid": 202691,
+        "lastname": "Thompson",
+        "jersey": "11",
+        "firstname": "Klay",
+        "position": "G"
+      },
+      "203084": {
+        "playerid": 203084,
+        "lastname": "Barnes",
+        "jersey": "40",
+        "firstname": "Harrison",
+        "position": "F"
+      },
+      "203105": {
+        "playerid": 203105,
+        "lastname": "Ezeli",
+        "jersey": "31",
+        "firstname": "Festus",
+        "position": "C"
+      },
+      "203110": {
+        "playerid": 203110,
+        "lastname": "Green",
+        "jersey": "23",
+        "firstname": "Draymond",
+        "position": "F"
+      },
+      "203546": {
+        "playerid": 203546,
+        "lastname": "Clark",
+        "jersey": "21",
+        "firstname": "Ian",
+        "position": "G"
+      }
+    }
+  }
+}
