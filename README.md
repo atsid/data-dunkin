@@ -33,6 +33,7 @@ We used both Python and JavaScript (Node.js) scripts to pre-process the data. It
   * `node split-events.js`
   * `node players-q.js`
   * `node ball-q.js`
+  * `node teams.js`
 * `npm install` to get node and bower deps 
 * `npm start` to run the app
 * go to localhost:8000 to see it run
