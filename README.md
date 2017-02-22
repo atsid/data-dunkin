@@ -8,6 +8,8 @@ Our goal was to visually plot the motions of the objects on the court to reveal 
 
 The data has some duplication and other issues, so far we've only done some light de-duping to try and keep it manageable. A much more robust pre-processing pipeline is necessary.
 
+You can see the running app at http://labs.atsid.com/data-dunkin/
+
 ![Screenshot](https://d1zjcuqflbd5k.cloudfront.net/files/acc_532312/Noeb?response-content-disposition=inline;%20filename=Screen%20Shot%202017-02-21%20at%2010.24.56%20AM.png&Expires=1487702086&Signature=HeGK3ZFhDUyEG2CVL8g3eS026~6MHsBZlMQ6ImdSsS49LsR587A8Q8xVN512bm32Nhg5NVNG4VG7qiqVHI3sPjf0M6nFalBWP1WYLg5Xe9qoVInAsa5TDdSU-xL42So~zW0GFLgJXQUbB8tVdt7a5P1uSLl2M4lU6P17XDtaNAM_&Key-Pair-Id=APKAJTEIOJM3LSMN33SA)
 
 ## What Does It Do?
